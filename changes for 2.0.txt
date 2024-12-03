@@ -1,0 +1,22 @@
+Major changes w/ htcw_gfx 2.0
+
+Cutting floor:
+
+Complete removal of driver integration, so no more "async" draw destinations, or write only draw destinations, etc, greatly simplifying the code.
+Rationale: Even with those facilities in place, it's still faster to draw to bitmaps and then send bitmaps to the screen. It takes a little bit more memory, but it's always worth it.
+On the other hand, the zoo that was the template specialization chains necessary to fully utilize a display device (batching, async, etc) was creating a maintenance problem.
+
+Rearrangements:
+
+svg_doc has been superseded by svg_image
+
+All images (png,jpg,svg) derive from a common base class (gfx::image) and you can add more
+
+All fonts (ttf, vlw, fon) now derive from a common base class (gfx::font), and gfx::font has been superseded by gfx::win_font
+
+Primary additions:
+
+Text and images can now be post-processed during the render by using font.draw() and image.draw() with their respective callbacks.
+
+Text encoding is now pluggable, and should present no huge changes for anyone, but allows for adding additional encodings other than latin1 and utf8
+

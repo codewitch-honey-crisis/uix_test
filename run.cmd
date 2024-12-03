@@ -1,0 +1,1 @@
+.\build\MinSizeRel\2ascii.exe nz.svg 10

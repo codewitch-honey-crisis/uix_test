@@ -1,0 +1,20 @@
+(tvg 1
+  (100 100 1/256 u8888 default)
+  (
+    (0 0 0)
+  )
+  (
+    (fill_path (flat 0)
+      (
+        (10 30)
+        (
+          (arc_ellipse - 20 20 0 false false (50 30))
+          (arc_ellipse - 20 20 0 false false (90 30))
+          (quadratic_bezier - (90 60) (50 90))
+          (quadratic_bezier - (10 60) (10 30))
+          (close -)
+        )
+      )
+    )
+  )
+)
