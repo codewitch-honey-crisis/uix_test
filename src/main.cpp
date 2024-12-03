@@ -636,34 +636,6 @@ void setup() {
 
     disp.active_screen(main_screen);
     disp.update();
-    return;
-    float data[] = {220,127,63,31};
-    for(int i = 0;i<100;++i) {
-        for(int j = 0;j<4;++j) {
-            float& di = data[j];
-            float delta = ((rand()%64)-32);
-            if(di+delta>255 || di+delta<0) {
-                delta=-delta;
-            }
-            switch(j) {
-                case 0: // cpu usage 
-                    //cpu_usage_meter.value(di/255.f);
-                    break;
-                case 1: // cpu heat 
-                    //cpu_heat_meter.value(di/255.f);
-                    break;
-                case 2: // gpu usage 
-                    //gpu_usage_meter.value(di/255.f);
-                    break;
-                case 3: // gpu heat 
-                    //gpu_heat_meter.value(di/255.f);
-                    break;
-            }
-            di+=delta;
-            history_graph.add_data(j,di/255.f);
-            
-        }
-    }
 }
 typedef struct {
     uint8_t cpu_tmax;
@@ -674,11 +646,10 @@ typedef struct {
     uint8_t gpu_temp;
 } response_t;
 void loop() {
-    disp.update();
-    return;
-        struct to_avg {
+    struct to_avg {
         float g0,g1,g2,g3;
     };
+    static float data[] = {220,127,63,31};
     static to_avg values[5];
     static uint32_t ts = 0;
     static int ts_count = 0;
@@ -691,7 +662,31 @@ void loop() {
         
         to_avg& value=values[index];
         
-        response_t resp; 
+        response_t resp;
+        resp.cpu_tmax = 90;
+        resp.gpu_tmax = 80;
+        for(int j = 0;j<4;++j) {
+            float& di = data[j];
+            float delta = ((rand()%64)-32);
+            if(di+delta>255 || di+delta<0) {
+                delta=-delta;
+            }
+            switch(j) {
+                case 0: // cpu usage 
+                    resp.cpu_usage = di;
+                    break;
+                case 1: // cpu heat 
+                    resp.cpu_temp = di;
+                    break;
+                case 2: // gpu usage 
+                    resp.gpu_usage = di;
+                    break;
+                case 3: // gpu heat 
+                    resp.gpu_temp = di; 
+                    break;
+            }
+            di+=delta;
+        }
         ts_count = 0;
         if(disconnected_label.visible()) {
             disconnected_label.visible(false);
